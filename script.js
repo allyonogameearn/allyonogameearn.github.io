@@ -29,7 +29,7 @@ allGames.push(game);
 allGames.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
     gamesContainer.innerHTML += `
       <div class="app-card">
-      <img src="${game.image}" alt="${game.name}">
+      <img src="https://allyonogameearn.github.io/${game.image}" alt="${game.name}">
         <div class="app-info">
           <h3>${game.name}</h3>
           <div class="rating">⭐⭐⭐⭐⭐</div>
