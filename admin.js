@@ -56,7 +56,7 @@ gamesList.innerHTML = "";
 
     gamesList.innerHTML += `
       <div class="game-card">
-    <img src="images/${game.image}" alt="${game.name}">
+      <img src="${game.image}" alt="${game.name}">
         <h3>${game.name}</h3>
         <p>⭐ ${game.rating || 5}</p>
 ${game.bonus ? `
