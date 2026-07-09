@@ -80,7 +80,7 @@ function showGames(list) {
   list.forEach(game => {
     gamesContainer.innerHTML += `
       <div class="app-card">
-      <img src="${game.image}" alt="${game.name}">
+      <img src="https://allyonogamesearn.github.io/${game.image}" alt="${game.name}">
         <div class="app-info">
           <h3>${game.name}</h3>
           <div class="rating">⭐⭐⭐⭐⭐</div>
