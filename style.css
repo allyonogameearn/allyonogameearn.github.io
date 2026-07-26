@@ -403,7 +403,7 @@ background: #1D4ED8;
 .install-logo{
     width:70px;
     height:70px;
-    border-radius:50px;
+    border-radius:10px;
     object-fit:cover;
     overflow:hidden;
     margin-left:2px;
