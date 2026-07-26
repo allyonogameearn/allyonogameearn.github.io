@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gaming Admin Panel</title>
+<title>All Yono Game Earn - Admin Panel</title>
 
 <link rel="stylesheet" href="admin.css">
 
@@ -15,53 +17,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 </head>
 
 <body>
-<script>
-const password = "dinesh9963";
 
-document.addEventListener("DOMContentLoaded", () => {
-
-const loginBtn = document.getElementById("loginBtn");
-
-loginBtn.onclick = function () {
-
-const pass = document.getElementById("adminPassword").value;
-
-if (pass === password) {
-document.getElementById("loginScreen").style.display = "none";
-} else {
-document.getElementById("loginError").innerText = "Wrong Password!";
-}
-
-};
-
-});
-</script>
 <div id="loginScreen" class="login-screen">
-  <div class="login-box">
-    <h2>🔒 Admin Login</h2>
 
-    <input
-      type="password"
-      id="adminPassword"
-      placeholder="Enter Password"
-    >
+<div class="login-box">
 
-    <button id="loginBtn">Login</button>
+<h2>🔒 Admin Login</h2>
 
-    <p id="loginError"></p>
-  </div>
+<input
+type="password"
+id="adminPassword"
+placeholder="Enter Admin Password">
+
+<button id="loginBtn">
+
+Login
+
+</button>
+
+<p id="loginError"></p>
+
 </div>
-<div class="container">
+
+</div>
+
+<div class="container" id="adminPanel" style="display:none;">
 
 <header class="header">
 
-<div>
-
 <h1>🎮 Gaming Admin Panel</h1>
-
-<p>Manage All Games From One Place</p>
-
-</div>
 
 <button id="logoutBtn">
 
@@ -84,7 +68,9 @@ Logout
 </div>
 
 <div class="card">
+
 <h2 id="totalViews">0</h2>
+
 <p>Total Views</p>
 
 </div>
@@ -98,23 +84,38 @@ Logout
 </div>
 
 </section>
+
 <section class="form-box">
 
 <h2>➕ Add New Game</h2>
-
 <input type="text" id="gameName" placeholder="Game Name">
 
 <input type="text" id="gameImage" placeholder="Game Image URL">
 
 <input type="text" id="gameLink" placeholder="Game Download Link">
+<input type="text" id="gameBadge" placeholder="Badge Text (HOT / NEW / VIP)">
+<label style="color:#ff0000;font-weight:bold;">🎁 Welcome Bonus</label>
+<input type="text" id="gameBonus" placeholder="₹51">
 
-<input type="number" id="gameRating" placeholder="Game Rating (1-5)">
-<input type="number" id="gameOrder" placeholder="Game Order (1 = Top)">
-<button id="addGame">Add Game</button>
-<input type="text" id="gameBonus" placeholder="Bonus Text (₹100 Bonus Free) 
+<label style="color:#0066ff;font-weight:bold;">🏦 Minimum Withdrawal</label>
+<input type="text" id="gameWithdraw" placeholder="₹100">
+
+<input type="number" id="gameRating" placeholder="Rating (1-5)">
+
+<input type="number" id="gameOrder" placeholder="Order (1 = Top 1, 2 = Top 2, 3 = Top 3)">
 <input type="color" id="gameBonusColorPicker" value="#ff0000">
-<input type="color" id="gameBonusColorPicker" value="#ff0000">
-<input type="color" id="gameBonusColorPicker" value="#ff0000" style="display:none;">
+
+<label>NEW Color</label>
+<input type="color" id="gameNewColor" value="#ff1744">
+<label>Badge Color</label>
+<input type="color" id="gameBadgeColor" value="#ff1744">
+<button id="addGame">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Game
+
+</button>
 
 </section>
 
@@ -128,6 +129,43 @@ Logout
 
 </section>
 </div>
+
+<script>
+const password = "dinesh9963";
+
+document.addEventListener("DOMContentLoaded", () => {
+
+const loginBtn = document.getElementById("loginBtn");
+
+loginBtn.onclick = function () {
+
+const pass = document.getElementById("adminPassword").value;
+
+if(pass === password){
+
+document.getElementById("loginScreen").style.display = "none";
+document.getElementById("adminPanel").style.display = "block";
+
+}else{
+
+document.getElementById("loginError").innerText = "❌ Wrong Password";
+
+}
+
+};
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.onclick = function(){
+
+document.getElementById("adminPanel").style.display = "none";
+document.getElementById("loginScreen").style.display = "flex";
+document.getElementById("adminPassword").value = "";
+
+};
+
+});
+</script>
 
 <script type="module" src="firebase.js"></script>
 <script type="module" src="admin.js"></script>
