@@ -403,10 +403,11 @@ background: #1D4ED8;
 .install-logo{
     width:70px;
     height:70px;
-    border-radius:10px;
+    border-radius:50%;
     object-fit:cover;
-    margin-left:2px;
-    display:block
+    margin-left:0;
+    margin-right:8px;
+    position:static;
 }
 
 .install-text{
