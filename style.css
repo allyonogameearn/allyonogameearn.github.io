@@ -402,7 +402,7 @@ background: #1D4ED8;
 .install-logo{
     width:70px;
     height:70px;
-    border-radius:10px;
+    border-radius:8px;
     object-fit:cover;
     margin-left:2px;
 }
