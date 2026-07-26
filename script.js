@@ -1,105 +1,203 @@
 import { db } from "./firebase.js";
+
 import {
-  doc,
-  setDoc,
-  increment,
-  collection,
-  getDocs
+collection,
+getDocs,
+doc,
+setDoc,
+increment
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// Website View Counter
 await setDoc(
-  doc(db, "website", "stats"),
-  {
-    views: increment(1)
-  },
-  { merge: true }
+doc(db,"website","stats"),
+{
+views:increment(1)
+},
+{
+merge:true
+}
 );
 
-// Load Games
-const gamesContainer = document.getElementById("gamesContainer");
-const allGames = [];
-if (gamesContainer) {
-  const querySnapshot = await getDocs(collection(db, "games"));
-  gamesContainer.innerHTML = "";
-const games = [];
-  querySnapshot.forEach((gameDoc) => {
-    const game = gameDoc.data();
-allGames.push(game);
-allGames.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
-    gamesContainer.innerHTML += `
-      <div class="app-card">
-      <img src="${game.image}" alt="${game.name}">
-        <div class="app-info">
-          <h3>${game.name}</h3>
-          <div class="rating">⭐⭐⭐⭐⭐</div>
-          <a href="${game.link}" target="_blank" class="download-btn">DOWNLOAD</a>
-        </div>
-      </div>
-    `;
-  });
-  allGames.sort((a, b) => Number(a.order || 999) - Number(b.order || 999));
-showGames(allGames);
-}
+const gamesContainer=document.getElementById("gamesContainer");
+const topThree=document.getElementById("topThreeGames");
+const searchInput=document.getElementById("searchInput");
 
-// Banner Slider
-const slides = document.querySelectorAll(".slide");
-let currentSlide = 0;
+let allGames=[];
 
-if (slides.length > 1) {
-  setInterval(() => {
-    slides[currentSlide].classList.remove("active");
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add("active");
-  }, 3000);
-}
-const searchInput = document.getElementById("searchInput");
+async function loadGames(){
 
-if (searchInput) {
-  if (searchInput) {
-  searchInput.addEventListener("input", () => {
-    const value = searchInput.value.toLowerCase().trim();
+const snapshot=await getDocs(collection(db,"games"));
 
-    showGames(
-      allGames.filter(game => {
-        const name = game.name.toLowerCase();
+allGames=[];
 
-        return (
-          name.includes(value) ||
-          value.includes(name) ||
-          name.replace(/\s/g, "").includes(value.replace(/\s/g, ""))
-        );
-      })
-    );
-  });
-}
-}
-function showGames(list) {
-  gamesContainer.innerHTML = "";
+snapshot.forEach((docItem)=>{
 
-  list.forEach(game => {
-    gamesContainer.innerHTML += `
-      <div class="app-card">
-      <img src="${game.image}" alt="${game.name}">
-        <div class="app-info">
-          <h3>${game.name}</h3>
-          <div class="rating">⭐⭐⭐⭐⭐</div>
-          <a href="${game.link}" target="_blank" class="download-btn">DOWNLOAD</a>
-        </div>
-      </div>
-    `;
-  });
-}
+allGames.push(docItem.data());
+
+});
+
+allGames.sort((a,b)=>(a.order||999)-(b.order||999));
+
+showTopGames();
+
 showGames(allGames);
 
-searchInput.addEventListener("input", function () {
-    const text = this.value.toLowerCase().replace(/\s/g, "");
+}
+function showTopGames(){
 
-    const result = allGames.filter(game => {
-        const name = game.name.toLowerCase().replace(/\s/g, "");
+if(!topThree) return;
 
-        return name.includes(text) || text.includes(name);
+topThree.innerHTML="";
+
+allGames.slice(0,3).forEach(game=>{
+
+topThree.innerHTML+=`
+
+<div class="top-card">
+
+<img src="${game.image}" alt="${game.name}">
+
+${game.badge ? `<div class="hot-badge" style="background:${game.badgeColor || '#ff1744'}">${game.badge}</div>` : ''}
+
+<h3>${game.name}</h3>
+${game.badge ? `<div class="hot-badge" style="background:${game.badgeColor || '#ff1744'}">${game.badge}</div>` : ''}
+
+<p style="color:${game.bonusColor};font-weight:bold;">
+🎁 ${game.bonus || "Bonus Not Available"}
+</p>
+
+<p>🏦 ${game.withdraw || "Min ₹100"}</p>
+
+<a href="${game.link}" target="_blank" class="top3-btn">
+
+Download
+
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+
+function showGames(list){
+
+if(!gamesContainer) return;
+
+gamesContainer.innerHTML="";
+
+list.forEach(game=>{
+
+gamesContainer.innerHTML+=`
+
+<div class="game-card">
+
+<img src="${game.image}" alt="${game.name}">
+
+<div class="game-info">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+<h3>${game.name}</h3>
+${game.badge ? `<span class="hot-badge" style="position:static;background:${game.badgeColor || '#ff1744'}">${game.badge}</span>` : ''}
+</div>
+
+<p style="color:#f59e0b;font-weight:bold;">
+${"⭐".repeat(game.rating || 5)}
+</p>
+
+<p style="color:${game.bonusColor};font-weight:bold;">
+🎁 Welcome Bonus: ${game.bonus || "₹51"}
+</p>
+
+<p style="color:#B8860B;font-weight:bold;">
+🏦 Withdrawal: ${game.withdraw || "₹100"}
+</p>
+
+</div>
+
+<a href="${game.link}" target="_blank" class="download-btn top-download-btn">
+
+Download
+
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+if(searchInput){
+
+searchInput.addEventListener("input",()=>{
+
+const value=searchInput.value.toLowerCase().trim();
+
+const result=allGames.filter(game=>{
+
+return game.name.toLowerCase().includes(value);
+
+});
+
+showGames(result);
+
+});
+
+}
+
+loadGames();
+const tabs = document.querySelectorAll(".tabs button");
+
+function setActiveTab(index){
+  tabs.forEach(btn => btn.classList.remove("active"));
+  tabs[index].classList.add("active");
+}
+tabs[0].onclick = () => {
+  showGames(allGames);
+};
+tabs[0].onclick = () => {
+  setActiveTab(0);
+  showGames(allGames);
+};
+
+tabs[1].onclick = () => {
+  setActiveTab(1);
+  showGames(allGames.filter(game => game.badge === "NEW"));
+};
+
+tabs[2].onclick = () => {
+  setActiveTab(2);
+  showGames(allGames.filter(game => game.badge === "UPCOMING"));
+};
+
+setActiveTab(0);
+const slides=document.querySelectorAll(".slide");
+
+let currentSlide=0;
+
+if(slides.length){
+
+setInterval(()=>{
+
+slides[currentSlide].classList.remove("active");
+
+currentSlide=(currentSlide+1)%slides.length;
+
+slides[currentSlide].classList.add("active");
+
+},3000);
+
+}
+function showFireworks(){
+    alert("🎉 Congratulations!");
+}
+document.querySelector(".header-strip").addEventListener("click", () => {
+    confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.4 }
     });
-
-    showGames(result);
 });
