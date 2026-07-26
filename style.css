@@ -401,13 +401,12 @@ background: #1D4ED8;
 }
 
 .install-logo{
-    .install-logo{
     width:70px;
     height:70px;
-    border-radius:10px;
+    border-radius:50%;
     object-fit:cover;
+    overflow:hidden;
     margin-left:2px;
-    }
 }
 
 .install-text{
