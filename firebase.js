@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-// For Firebase JS SDK v7.20.0 and later, //measurementId is optional
+
 const firebaseConfig = {
   apiKey: "AIzaSyA0pw1tf3WUk9yEYFmaH5k-7AM2_6MJTa8",
   authDomain: "allyonogamesearn.firebaseapp.com",
