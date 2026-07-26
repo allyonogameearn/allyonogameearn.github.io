@@ -11,164 +11,201 @@ doc,
 serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const totalGames = document.getElementById("totalGames");
-const totalViews = document.getElementById("totalViews");
-const totalDownloads = document.getElementById("totalDownloads");
+const totalGames=document.getElementById("totalGames");
+const totalViews=document.getElementById("totalViews");
+const totalDownloads=document.getElementById("totalDownloads");
 
-const gameName = document.getElementById("gameName");
-const gameImage = document.getElementById("gameImage");
-const gameLink = document.getElementById("gameLink");
-const gameRating = document.getElementById("gameRating");
-const gameBonus = document.getElementById("gameBonus");
-const gameBonusColorPicker = document.getElementById("gameBonusColorPicker");
-const gameBonusColor = document.getElementById("gameBonusColor");
-const gameOrder = document.getElementById("gameOrder");
-const addGame = document.getElementById("addGame");
-const gamesList = document.getElementById("gamesList");
+const gameName=document.getElementById("gameName");
+const gameImage=document.getElementById("gameImage");
+const gameLink=document.getElementById("gameLink");
+const gameBonus=document.getElementById("gameBonus");
 
-let currentEditId = "";
-async function loadGames() {
+const gameWithdraw=document.getElementById("gameWithdraw");
+const gameRating=document.getElementById("gameRating");
+const gameOrder=document.getElementById("gameOrder");
+const gameNewColor=document.getElementById("gameNewColor");
+const gameBadge=document.getElementById("gameBadge");
+const gameBadgeColor=document.getElementById("gameBadgeColor");
+const gameBonusColorPicker=document.getElementById("gameBonusColorPicker");
+const addGame=document.getElementById("addGame");
+const gamesList=document.getElementById("gamesList");
 
-  const snapshot = await getDocs(collection(db, "games"));
-let games = [];
+let currentEditId="";
 
-snapshot.forEach((docSnap) => {
-    games.push({
-        id: docSnap.id,
-        ...docSnap.data()
-    });
-});
+async function loadGames(){
 
-games.sort((a, b) => (a.order || 999) - (b.order || 999));
+const snapshot=await getDocs(collection(db,"games"));
 
-gamesList.innerHTML = "";
-  gamesList.innerHTML = "";
+gamesList.innerHTML="";
 
-  let views = 0;
-  let downloads = 0;
+let views=0;
+let downloads=0;
+snapshot.forEach((docSnap)=>{
 
-  snapshot.forEach((docSnap) => {
+const game={
+id:docSnap.id,
+...docSnap.data()
+};
 
-    const game = docSnap.data();
+views+=Number(game.views||0);
+downloads+=Number(game.downloads||0);
 
-    views += Number(game.views || 0);
-    downloads += Number(game.downloads || 0);
+gamesList.innerHTML+=`
 
-    gamesList.innerHTML += `
-      <div class="game-card">
-      <img src="${game.image}" alt="${game.name}">
-        <h3>${game.name}</h3>
-        <p>⭐ ${game.rating || 5}</p>
-${game.bonus ? `
-<p style="color:${game.bonusColor || '#ff0000'};font-weight:bold;">
-${game.bonus}
+<div class="game-card">
+
+<img src="${game.image}" alt="${game.name}">
+
+<h3>${game.name}</h3>
+
+<p>⭐ ${game.rating||5}</p>
+
+<p style="color:${game.bonusColor||'#ff0000'};font-weight:bold;">
+🎁 ${game.bonus||"No Bonus"}
 </p>
-` : ""}
-<button class="edit-btn" onclick="window.editGame('${docSnap.id}')">
-        Edit
-        </button>
+
+<p>
+🏦 ${game.withdraw||"₹100"}
+</p>
+
+<button class="edit-btn"
+onclick="window.editGame('${game.id}')">
+
+Edit
+
+</button>
 
 <button class="delete-btn"
-    onclick="window.deleteGame('${docSnap.id}')">
-    Delete
-</button>
-      </div>
-    `;
-  });
+onclick="window.deleteGame('${game.id}')">
 
-  totalGames.textContent = snapshot.size;
-  totalViews.textContent = views;
-  totalDownloads.textContent = downloads;
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
+
+totalGames.textContent=snapshot.size;
+totalViews.textContent=views;
+totalDownloads.textContent=downloads;
+
 }
 
 loadGames();
-addGame.addEventListener("click", async () => {
+addGame.addEventListener("click", async ()=>{
 
-  const name = gameName.value.trim();
-  const image = gameImage.value.trim();
-  const link = gameLink.value.trim();
-  const rating = Number(gameRating.value) || 5;
-const order = Number(gameOrder.value) || 999;
-const bonus = gameBonus.value.trim();
-const bonusColor = gameBonusColorPicker.value;
-  if (!name || !image || !link) {
-    alert("Please fill all fields");
-    return;
-  }
+const name=gameName.value.trim();
+const image=gameImage.value.trim();
+const link=gameLink.value.trim();
+const bonus=gameBonus.value.trim();
+const withdraw=gameWithdraw.value.trim();
+const rating=Number(gameRating.value)||5;
+const order=Number(gameOrder.value)||999;
 
-  if (currentEditId) {
+if(!name||!image||!link){
+alert("Please fill all required fields");
+return;
+}
 
-    await updateDoc(doc(db, "games", currentEditId), {
-      name,
-      image,
-      link,rating,
-      bonus,
-bonusColor,
-order
-    });
+const data={
+name,
+image,
+link,
+bonus,
+withdraw,
+rating,
+order,
+bonusColor: gameBonusColorPicker.value,
+bonusColor: gameBonusColorPicker.value,
+newColor: gameNewColor.value,
+badge: gameBadge.value,
+badgeColor: gameBadgeColor.value,
+views:0,
+downloads:0
+};
 
-    alert("Game Updated Successfully");
+if(currentEditId){
 
-    currentEditId = "";
-addGame.textContent = "Add Game";
-  } else {
+await updateDoc(doc(db,"games",currentEditId),{
+name,
+image,
+link,
+bonus,
+withdraw,
+rating,
+order,
+bonusColor: gameBonusColorPicker.value,
+newColor: gameNewColor.value,
+badge: gameBadge.value,
+badgeColor: gameBadgeColor.value,
+});
 
-    await addDoc(collection(db, "games"), {
-      name,
-      image,
-      link,
-      rating,
-      order,
-      bonus,
-bonusColor,
-      views: 0,
-      downloads: 0,
-      createdAt: serverTimestamp()
-    });
+alert("Game Updated Successfully");
 
-    alert("Game Added Successfully");
-  }
+currentEditId="";
+addGame.textContent="Add Game";
 
-  gameName.value = "";
-  gameImage.value = "";
-  gameLink.value = "";
-  gameRating.value = "";
-gameBonus.value = "";
-gameBonusColorPicker.value = "#ff0000";
-  await loadGames();
+}else{
+
+data.createdAt=serverTimestamp();
+
+await addDoc(collection(db,"games"),data);
+
+alert("Game Added Successfully");
+
+}
+
+gameName.value="";
+gameImage.value="";
+gameLink.value="";
+gameBonus.value="";
+gameWithdraw.value="";
+gameRating.value="";
+gameOrder.value="";
+gameNewColor.value="#ff1744";
+gameBadge.value="";
+gameBadgeColor.value="#ff1744";
+loadGames();
 
 });
-window.editGame = async (id) => {
+window.editGame = async (id)=>{
 
-const gameDoc = await getDoc(doc(db, "games", id));
+const gameDoc = await getDoc(doc(db,"games",id));
 
-  addGame.textContent = "Update Game";
-
-if (!gameDoc.exists()) return;
+if(!gameDoc.exists()) return;
 
 const game = gameDoc.data();
 
 gameName.value = game.name || "";
 gameImage.value = game.image || "";
 gameLink.value = game.link || "";
+gameBonus.value = game.bonus || "";
+gameWithdraw.value = game.withdraw || "";
 gameRating.value = game.rating || 5;
 gameOrder.value = game.order || 999;
-gameBonus.value = game.bonus || "";
-gameBonusColorPicker.value = game.bonusColor || "#ff0000";
+gameNewColor.value = game.newColor || "#ff1744";
+
 currentEditId = id;
+
+addGame.textContent = "Update Game";
+
 document.querySelector(".form-box").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
+behavior:"smooth"
 });
+
 };
-window.deleteGame = async (id) => {
 
-  if (!confirm("Delete this game?")) return;
+window.deleteGame = async (id)=>{
 
-  await deleteDoc(doc(db, "games", id));
+if(!confirm("Delete this game?")) return;
+
+await deleteDoc(doc(db,"games",id));
 
 alert("Game Deleted Successfully");
 
-await loadGames();
+loadGames();
 
 };
