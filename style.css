@@ -33,10 +33,10 @@ color:#fff;
 .toplogo{
     width:70px;
     height:70px;
-    border-radius:10px;
+    border-radius:50%;
     object-fit:cover;
     margin-left:0;
-    margin-right:2px;
+    margin-right:8px;
     position:static;
 }
 
