@@ -30,14 +30,13 @@ font-size:22px;
 font-weight:700;
 color:#fff;
 }
-.toplogo{
+.top-logo{
     width:70px;
     height:70px;
     border-radius:50%;
     object-fit:cover;
-    margin-left:0;
-    margin-right:8px;
-    position:static;
+    overflow:hidden;
+    display:block;
 }
 
 .verified{
@@ -406,6 +405,7 @@ background: #1D4ED8;
     border-radius:50%;
     object-fit:cover;
     overflow:hidden;
+    display:block;
     margin-left:2px;
 }
 
