@@ -55,7 +55,7 @@ topThree.innerHTML+=`
 
 <div class="top-card">
 
-<img src="${game.image}" alt="${game.name}">
+<img src="images/${game.image}" alt="${game.name}">
 
 ${game.badge ? `<div class="hot-badge" style="background:${game.badgeColor || '#ff1744'}">${game.badge}</div>` : ''}
 
@@ -94,7 +94,7 @@ gamesContainer.innerHTML+=`
 
 <div class="game-card">
 
-<img src="${game.image}" alt="${game.name}">
+<img src="images/${game.image}" alt="${game.name}">
 
 <div class="game-info">
 
