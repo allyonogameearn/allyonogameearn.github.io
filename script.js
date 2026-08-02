@@ -207,7 +207,7 @@ async function updateDownload(gameId) {
   {
     merge: true
   }
-););
+);
   } catch (e) {
     console.error(e);
   }
