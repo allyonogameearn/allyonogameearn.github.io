@@ -40,6 +40,13 @@ gamesList.innerHTML="";
 
 let views=0;
 let downloads=0;
+  const statsDoc = await getDoc(doc(db, "website", "stats"));
+
+if (statsDoc.exists()) {
+  const stats = statsDoc.data();
+  totalViews.textContent = stats.views || 0;
+  totalDownloads.textContent = stats.downloads || 0;
+}
 snapshot.forEach((docSnap)=>{
 
 const game={
@@ -89,9 +96,6 @@ Delete
 });
 
 totalGames.textContent=snapshot.size;
-totalViews.textContent=views;
-totalDownloads.textContent=downloads;
-
 }
 
 loadGames();
