@@ -9,16 +9,6 @@ increment,
 updateDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-await setDoc(
-doc(db,"website","stats"),
-{
-views:increment(1)
-},
-{
-merge:true
-}
-);
-
 const gamesContainer=document.getElementById("gamesContainer");
 const topThree=document.getElementById("topThreeGames");
 const searchInput=document.getElementById("searchInput");
