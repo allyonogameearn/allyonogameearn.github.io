@@ -5,8 +5,8 @@ collection,
 getDocs,
 doc,
 setDoc,
-increment
-  updateDoc
+increment,
+updateDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 await setDoc(
