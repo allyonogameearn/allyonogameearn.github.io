@@ -6,6 +6,7 @@ getDocs,
 doc,
 setDoc,
 increment
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 await setDoc(
@@ -205,12 +206,10 @@ document.querySelector(".header-strip").addEventListener("click", () => {
 });
 async function updateDownload(gameId) {
   try {
-    const { updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js");
-
     await updateDoc(doc(db, "games", gameId), {
       downloads: increment(1)
     });
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
