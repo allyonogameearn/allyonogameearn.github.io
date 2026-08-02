@@ -111,7 +111,7 @@ ${"⭐".repeat(game.rating || 5)}
 
 </div>
 
-<a href="${game.link}" target="_blank" class="download-btn top-download-btn" onclick="updateDownload('${game.id}')">
+<a href="${game.link}" target="_blank" class="download-btn top-download-btn" onclick="updateView('${game.id}'); updateDownload('${game.id}')">
 Download
 
 </a>
@@ -213,3 +213,24 @@ async function updateDownload(gameId) {
   }
 }
 window.updateDownload = updateDownload;
+async function updateView(gameId) {
+  try {
+    await updateDoc(doc(db, "games", gameId), {
+      views: increment(1)
+    });
+
+    await setDoc(
+      doc(db, "website", "stats"),
+      {
+        views: increment(1)
+      },
+      {
+        merge: true
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+window.updateView = updateView;
