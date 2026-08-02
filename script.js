@@ -112,7 +112,7 @@ ${"⭐".repeat(game.rating || 5)}
 </div>
 
 <a href="${game.link}" target="_blank" class="download-btn top-download-btn"
-onclick="updateDownload('${game.id}'); updateView('${game.id}');">
+onclick="event.preventDefault(); updateDownload('${game.id}'); updateView('${game.id}'); window.open('${game.link}','_blank');">
 Download
 
 </a>
