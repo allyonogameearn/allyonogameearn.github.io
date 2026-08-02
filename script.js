@@ -32,7 +32,10 @@ allGames=[];
 
 snapshot.forEach((docItem)=>{
 
-allGames.push(docItem.data());
+allGames.push({
+  id: docItem.id,
+  ...docItem.data()
+});
 
 });
 
