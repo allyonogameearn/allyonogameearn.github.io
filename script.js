@@ -209,6 +209,6 @@ async function updateDownload(gameId) {
   }
 );
   } catch (e) {
-    console.error(e);
+  alert(e.message);
   }
 }
