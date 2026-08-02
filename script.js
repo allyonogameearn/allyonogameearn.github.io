@@ -212,3 +212,4 @@ async function updateDownload(gameId) {
   alert(e.message);
   }
 }
+window.updateDownload = updateDownload;
