@@ -209,6 +209,15 @@ async function updateDownload(gameId) {
     await updateDoc(doc(db, "games", gameId), {
       downloads: increment(1)
     });
+    await setDoc(
+  doc(db, "website", "stats"),
+  {
+    downloads: increment(1)
+  },
+  {
+    merge: true
+  }
+););
   } catch (e) {
     console.error(e);
   }
