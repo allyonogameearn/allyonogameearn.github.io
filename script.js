@@ -120,8 +120,7 @@ ${"⭐".repeat(game.rating || 5)}
 
 </div>
 
-<a href="${game.link}" target="_blank" class="download-btn top-download-btn">
-
+<a href="${game.link}" target="_blank" class="download-btn top-download-btn" onclick="updateDownload('${game.id}')">
 Download
 
 </a>
@@ -204,3 +203,14 @@ document.querySelector(".header-strip").addEventListener("click", () => {
         origin: { y: 0.4 }
     });
 });
+async function updateDownload(gameId) {
+  try {
+    const { updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js");
+
+    await updateDoc(doc(db, "games", gameId), {
+      downloads: increment(1)
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
